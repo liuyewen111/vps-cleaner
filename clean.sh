@@ -55,11 +55,11 @@ clean_pacman() {
 clean_apk() {
     echo "使用 apk 清理"
     apk update
-    apk autoremove
+    # apk 没有 autoremove，跳过这条命令
     rm -rf /var/cache/apk/*
 }
 
-# 优先根据 /etc/os-release 的 ID 和 ID_LIKE 判断
+# 根据系统类型调用对应清理函数
 if [[ "$OS" == "ubuntu" || "$OS" == "debian" ]] || [[ "$OS_LIKE" == *"debian"* ]]; then
     clean_apt
 elif [[ "$OS" == "centos" || "$OS" == "rhel" || "$OS_LIKE" == *"rhel"* ]]; then
@@ -71,7 +71,7 @@ elif [[ "$OS" == "alpine" ]]; then
 elif [[ "$OS" == "arch" ]]; then
     clean_pacman
 else
-    # 如果上面没匹配到，尝试检测包管理器命令，按优先级执行
+    # 兼容未知系统，尝试检测包管理器
     if command -v apt >/dev/null 2>&1; then
         clean_apt
     elif command -v yum >/dev/null 2>&1; then
@@ -121,7 +121,7 @@ if [ ! -f "$INSTALLED_FLAG" ] && [ ! -f "$REJECTED_FLAG" ]; then
     read -p "是否将本脚本添加为系统命令 vpsclean？(Y/n): " confirm
     confirm=${confirm:-Y}
     if [[ "$confirm" =~ ^[Yy]$ ]]; then
-        curl -sLo /usr/local/bin/vpsclean https://raw.githubusercontent.com/liuyewen111/vps-cleaner/main/clean.sh
+        cp "$0" /usr/local/bin/vpsclean
         chmod +x /usr/local/bin/vpsclean
         touch "$INSTALLED_FLAG"
         echo "脚本已添加为系统命令：vpsclean"
