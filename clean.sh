@@ -30,7 +30,7 @@ rm -rf /var/tmp/*
 find /var/log -type f -name "*.log" -exec truncate -s 0 {} \;
 
 # 清理用户下载目录中遗留的大文件（如安装包）
-echo "正在尝试清理 /root 和 /home 目录下的下载残留..."
+echo "正在清理 /root 和 /home 目录下的下载残留..."
 find /root -type f \( -name "*.zip" -o -name "*.tar.gz" -o -name "*.sh" -o -name "*.iso" \) -delete
 find /home -type f \( -name "*.zip" -o -name "*.tar.gz" -o -name "*.sh" -o -name "*.iso" \) -delete
 
@@ -58,7 +58,7 @@ read -p "是否将本脚本添加为系统命令 vpsclean？(Y/n): " confirm
 confirm=${confirm:-Y}
 
 if [[ "$confirm" =~ ^[Yy]$ ]]; then
-    cp "$0" /usr/local/bin/vpsclean
+    curl -sLo /usr/local/bin/vpsclean https://raw.githubusercontent.com/liuyewen111/vps-cleaner/main/clean.sh
     chmod +x /usr/local/bin/vpsclean
     echo "脚本已添加为系统命令：vpsclean"
     echo "你以后只需要输入 'vpsclean' 即可再次运行"
