@@ -18,5 +18,5 @@
 **一键运行（推荐）：**
 
 ```bash
-bash <(curl -sL https://raw.githubusercontent.com/你的用户名/vps-cleaner/main/clean.sh)
+bash <(curl -sL https://raw.githubusercontent.com/liuyewen111/vps-cleaner/main/clean.sh)
 ```
