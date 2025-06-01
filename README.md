@@ -13,6 +13,10 @@ VPS Cleaner 是一个支持多种 Linux 发行版的远程一键清理脚本。
 ```bash
 curl -fsSL https://raw.githubusercontent.com/liuyewen111/vps-cleaner/main/clean.sh | bash
 ````
+或
+```bash
+bash <(curl -sSL https://raw.githubusercontent.com/liuyewen111/vps-cleaner/main/clean.sh)
+```bash
 脚本首次运行时会自动检测你的系统类型，执行相应清理命令，并自动安装快捷命令 `vpsclean`，以后你只需输入：
 ```bash
 vpsclean
