@@ -53,17 +53,22 @@ echo "清理完成"
 echo "建议重启 VPS 查看空间释放情况"
 echo "======================"
 
-# 判断快捷命令是否已存在
-if [ ! -f /usr/local/bin/vpsclean ]; then
+# 记录快捷命令安装或拒绝状态的标志文件
+INSTALLED_FLAG=/usr/local/bin/.vpsclean_installed
+REJECTED_FLAG=/usr/local/bin/.vpsclean_rejected
+
+if [ ! -f "$INSTALLED_FLAG" ] && [ ! -f "$REJECTED_FLAG" ]; then
     read -p "是否将本脚本添加为系统命令 vpsclean？(Y/n): " confirm
     confirm=${confirm:-Y}
 
     if [[ "$confirm" =~ ^[Yy]$ ]]; then
         curl -sLo /usr/local/bin/vpsclean https://raw.githubusercontent.com/liuyewen111/vps-cleaner/main/clean.sh
         chmod +x /usr/local/bin/vpsclean
+        touch "$INSTALLED_FLAG"
         echo "脚本已添加为系统命令：vpsclean"
         echo "你以后只需要输入 'vpsclean' 即可再次运行"
     else
+        touch "$REJECTED_FLAG"
         echo "未添加快捷命令"
     fi
 fi
