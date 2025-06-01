@@ -1,64 +1,40 @@
-# VPS Cleaner 一键清理脚本
+# VPS Cleaner — 多系统一键清理脚本
 
-🧹 一个简单实用的一键脚本，用于自动清理 VPS 上的各种缓存、日志、旧内核和安装包残留，释放磁盘空间，保持系统干净整洁。
+## 简介
 
-## ✨ 功能特点
+VPS Cleaner 是一个支持多种 Linux 发行版的远程一键清理脚本。  
+它帮助你快速清理系统缓存、无用软件包、旧内核、日志及下载残留，释放磁盘空间，保持 VPS 轻快稳定。
 
-- 自动更新系统缓存信息
-- 清理无用依赖包 (`apt autoremove`)
-- 删除 APT 缓存 (`apt clean`)
-- 清空 `/var/cache/`, `/var/tmp/`, `/var/log` 日志文件
-- 删除常见安装包和压缩包（`.zip`, `.tar.gz`, `.iso`, `.sh` 等）
-- 清除旧内核（保留当前正在使用的）
-- 清理 Systemd 日志（`journalctl --vacuum-time=1d`）
-- 可选：清理 snap 缓存
+支持包括但不限于：Debian、Ubuntu、CentOS、Fedora、Alpine、Arch Linux 等主流及小众系统。
 
-## 脚本支持的 Linux 系统及包管理器
+## 使用方法
 
-| Linux 发行版 / 系统            | 识别标识 `$ID` 或 `$ID_LIKE`   | 包管理器                   | 清理函数名         |
-| ------------------------- | ------------------------- | ---------------------- | ------------- |
-| Ubuntu                    | ubuntu                    | apt                    | clean\_apt    |
-| Debian                    | debian                    | apt                    | clean\_apt    |
-| Debian 衍生（Linux Mint等）    | 可能 `$ID_LIKE` 包含 `debian` | apt                    | clean\_apt    |
-| CentOS                    | centos                    | yum                    | clean\_yum    |
-| RHEL (Red Hat Enterprise) | rhel                      | yum                    | clean\_yum    |
-| Fedora                    | fedora                    | dnf                    | clean\_dnf    |
-| Alpine                    | alpine                    | apk                    | clean\_apk    |
-| Arch Linux                | arch                      | pacman                 | clean\_pacman |
-| 其他未知系统                    | 通过检测可用包管理器执行相应清理          | apt/yum/dnf/pacman/apk | 对应清理函数        |
-
-## 具体包管理器说明
-
-* **apt** — 主要用于 Debian、Ubuntu 及其衍生系统
-* **yum** — 主要用于 CentOS 7 及之前版本、RHEL 7
-* **dnf** — Fedora、CentOS 8 及 RHEL 8 之后版本的包管理器
-* **pacman** — Arch Linux 和部分基于 Arch 的发行版
-* **apk** — Alpine Linux
-
-## 小众或未明确识别的系统
-
-脚本中有最后 fallback（回退）判断，会检测系统中是否存在以上包管理器之一，自动调用对应清理命令，例如：
-
-* 如果检测到 `apt` 命令存在则调用 `clean_apt`
-* 如果检测到 `yum` 命令存在则调用 `clean_yum`
-* 依此类推
-
-这样即使是某些小众发行版，只要安装了上述包管理器之一，都能得到相应的支持。
-
-## 🖥️ 使用方法
-
-**一键运行（推荐）：**
-
+直接在你的 VPS 终端执行以下命令即可一键下载安装并运行清理脚本：
 ```bash
-bash <(curl -sL https://raw.githubusercontent.com/liuyewen111/vps-cleaner/main/clean.sh)
+curl -fsSL https://raw.githubusercontent.com/liuyewen111/vps-cleaner/main/clean.sh | bash
+````
+脚本首次运行时会自动检测你的系统类型，执行相应清理命令，并自动安装快捷命令 `vpsclean`，以后你只需输入：
+```bash
+vpsclean
 ```
+即可快速再次运行清理操作，无需重复下载安装。
 
-## ⚠️ 注意事项
+## 功能亮点
 
-- 脚本将自动清理常见缓存和安装包，如有重要文件，请提前备份
-- 推荐定期运行以保持 VPS 干净整洁
-- 脚本默认清理最近 1 天以前的日志（journalctl --vacuum-time=1d）
+* 支持多种主流 Linux 发行版及包管理器（apt、yum、dnf、pacman、apk）
+* 自动删除无用依赖和缓存，释放大量空间
+* 清理系统日志和临时文件
+* 删除用户下载目录中常见安装包残留（如 `.zip`、`.tar.gz`、`.iso`）
+* 清理旧内核（Debian/Ubuntu）
+* 清理 snap 缓存（如存在）
+* 自动安装快捷命令，方便后续使用
 
-## 📄 开源协议
+## 注意事项
+
+* 脚本需要以 root 权限运行，建议使用 `sudo` 执行。
+* 运行过程中会删除缓存和日志文件，请确认无重要数据存放其中。
+* 脚本适合常见 Linux 服务器环境，小众发行版兼容性可能有所差异。
+
+## 开源协议
 
 本项目使用 MIT License 开源，你可以自由使用和修改。
