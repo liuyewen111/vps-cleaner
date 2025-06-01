@@ -52,3 +52,16 @@ echo "======================"
 echo "清理完成"
 echo "建议重启 VPS 查看空间释放情况"
 echo "======================"
+
+# 添加快捷命令功能
+read -p "是否将本脚本添加为系统命令 vpsclean？(Y/n): " confirm
+confirm=${confirm:-Y}
+
+if [[ "$confirm" =~ ^[Yy]$ ]]; then
+    cp "$0" /usr/local/bin/vpsclean
+    chmod +x /usr/local/bin/vpsclean
+    echo "脚本已添加为系统命令：vpsclean"
+    echo "你以后只需要输入 'vpsclean' 即可再次运行"
+else
+    echo "未添加快捷命令"
+fi
